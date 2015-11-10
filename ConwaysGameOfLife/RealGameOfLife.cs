@@ -82,9 +82,17 @@ namespace ConwaysGameOfLife
             for (int i = 0; i < CurrentBoard.GetLength(0); i++)
             {
                 List <bool> row = new List<bool>();
-                for (int j = 0; j < CurrentBoard.GetLength(1); j++)
+                for (int j = 0; j <= CurrentBoard.GetLength(1); j++)
                 {
-                    row.Add(CurrentBoard[i, j]);
+                    if (j < CurrentBoard.GetLength(1))
+                    {
+                        row.Add(CurrentBoard[i, j]);
+                    }
+                    else
+                    {
+                        //throw new ArgumentException("this happens");
+                        BoardList.Add(row);
+                    }
                 }
             }
             return BoardList;
@@ -93,6 +101,47 @@ namespace ConwaysGameOfLife
         public bool[,] GetBoard()
         {
             return CurrentBoard;
+        }
+
+        public void Pattern_Selector (string input)
+        {
+            if (input.ToLower() == "blinker" )
+            {
+                BoardSize = 5;
+                CurrentBoard = new bool[5, 5];
+                NewBoard = new bool[5, 5];
+                Flipper(1, 2);
+                Flipper(2, 2);
+                Flipper(3, 2);
+            }
+            else if (input.ToLower() == "toad")
+            {
+                BoardSize = 6;
+                CurrentBoard = new bool[6, 6];
+                NewBoard = new bool[6, 6];
+                Flipper(2, 3);
+                Flipper(2, 4);
+                Flipper(2, 5);
+                Flipper(3, 2);
+                Flipper(3, 3);
+                Flipper(3, 4);
+            }
+            else if (input.ToLower() == "beacon")
+            {
+                BoardSize = 6;
+                CurrentBoard = new bool[6, 6];
+                NewBoard = new bool[6, 6];
+                Flipper(1, 1);
+                Flipper(1, 2);
+                Flipper(2, 1);
+                Flipper(3, 4);
+                Flipper(4, 3);
+                Flipper(4, 4);
+            }
+            else
+            {
+                throw new ArgumentException("We haven't implemented that pattern yet");
+            }
         }
     }
 }

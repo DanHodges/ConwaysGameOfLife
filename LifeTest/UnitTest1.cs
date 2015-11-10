@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ConwaysGameOfLife;
 using System.Linq;
+using System.Collections.Generic;
 
 
 namespace LifeTest
@@ -71,6 +72,78 @@ namespace LifeTest
             var first = game.GetBoard();
             var second = game2.GetBoard();
             CollectionAssert.AreEqual(first, second);
+        }
+
+        [TestMethod]
+        public void ArrayToListWorksOnAllFalseThreeByThree()
+        {
+            List<List<bool>> Actual = new List<List<bool>>();
+            Actual.Add(new List<bool>(new bool[] { false, false, false }));
+            Actual.Add(new List<bool>(new bool[] { false, false, false }));
+            Actual.Add(new List<bool>(new bool[] { false, false, false }));
+            RealGameOfLife Arrays = new RealGameOfLife(3);
+            List<List<bool>> Expected = Arrays.ToList();
+            for (int i = 0; i < Expected.Count; i++)
+            {
+                CollectionAssert.AreEqual(Expected[i], Actual[i]);
+            }
+        }
+
+        [TestMethod]
+        public void Can_Create_Blinker_Pattern()
+        {
+            RealGameOfLife ExpectedGame = new RealGameOfLife(1);
+            ExpectedGame.Pattern_Selector("Blinker");
+            RealGameOfLife ActualGame = new RealGameOfLife(5);
+            ActualGame.Flipper(1, 2);
+            ActualGame.Flipper(2, 2);
+            ActualGame.Flipper(3, 2);
+            var expected = ExpectedGame.GetBoard();
+            var actual = ActualGame.GetBoard();
+            CollectionAssert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void Can_Create_Toad_Pattern()
+        {
+            RealGameOfLife ExpectedGame = new RealGameOfLife(1);
+            ExpectedGame.Pattern_Selector("Toad");
+            RealGameOfLife ActualGame = new RealGameOfLife(6);
+            ActualGame.Flipper(2, 3);
+            ActualGame.Flipper(2, 4);
+            ActualGame.Flipper(2, 5);
+            ActualGame.Flipper(3, 2);
+            ActualGame.Flipper(3, 3);
+            ActualGame.Flipper(3, 4);
+            var expected = ExpectedGame.GetBoard();
+            var actual = ActualGame.GetBoard();
+            CollectionAssert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void Can_Create_Beacon_Pattern()
+        {
+            RealGameOfLife ExpectedGame = new RealGameOfLife(1);
+            ExpectedGame.Pattern_Selector("beacon");
+            RealGameOfLife ActualGame = new RealGameOfLife(6);
+            ActualGame.Flipper(1, 1);
+            ActualGame.Flipper(1, 2);
+            ActualGame.Flipper(2, 1);
+            ActualGame.Flipper(3, 4);
+            ActualGame.Flipper(4, 3);
+            ActualGame.Flipper(4, 4);
+            var expected = ExpectedGame.GetBoard();
+            var actual = ActualGame.GetBoard();
+            CollectionAssert.AreEqual(expected, actual);
+        }
+
+        //[TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public static void Throws_Error_On_Dumb_Input()
+        {
+            RealGameOfLife game = new RealGameOfLife(1);
+            game.Pattern_Selector("nemo");
+            //ExceptionAssert.Throws<ArgumentException>(() => game.Pattern_Selector("nemo");
         }
     }
 }

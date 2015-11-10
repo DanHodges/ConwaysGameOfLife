@@ -11,12 +11,13 @@ namespace BoardViewer
     /// </summary>
     public partial class MainWindow : Window
     {
-        private Board currentBoard;
+        private RealGameOfLife currentBoard;
         private DispatcherTimer dispatcherTimer;
 
         public MainWindow()
         {
-            currentBoard = new FauxGameOfLife();
+            currentBoard = new RealGameOfLife(3);
+            currentBoard.Pattern_Selector("toad");
             dispatcherTimer = new DispatcherTimer();
 
             InitializeComponent();
